@@ -30,19 +30,19 @@ const setMusic =(i)=>{
     let song = songs[i];
     currentMusic = i;
     music.src = song.url;
+    music.pause();
     songName.innerHTML = song.title
     artistName.innerHTML = song.artist
     disk.style.backgroundImage = `url(${song.artwork})`
     currentMusic.innerHTML = '00:00';
-    music.play();
     setTimeout(() => {
         seekBar.max = music.duration;
         musicDuration.innerHTML = formatTime(music.duration) 
     }, 2000);
 }
 setMusic(0)
-// format time in min and second format
 
+// format time in min and second format
 const formatTime = (time)=>{
    let min =Math.floor(time/60)
    if(min < 10){
@@ -56,19 +56,23 @@ const formatTime = (time)=>{
 }
 
 // seek bar
-
 setInterval(() => {
     seekBar.value = music.currentTime
     currentTime.innerHTML = formatTime(music.currentTime)
-    if(Math.floor(music.currentTime) == Math.floor(seekBar.max)){
-        forwardBtn.click()
+    if(Math.floor(music.duration) !== 0){
+        if(Math.floor(music.currentTime) == Math.floor(music.duration)){
+            console.log('coming here');
+            forwardBtn.click()
+        }
     }
+
 }, 500);
 
 seekBar.addEventListener('change', ()=>{
     music.currentTime = seekBar.value
 })
 
+// //play
 const playMusic =()=>{
     music.play();
     playBtn.classList.remove('pause')
